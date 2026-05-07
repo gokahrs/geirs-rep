@@ -9,8 +9,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install PlatformIO
-        run: pip install --upgrade platformio
+      - name: Installer PlatformIO
+        run: |
+          pip install --upgrade platformio
+          # Vi tvinger inn den nyeste utviklerversjonen manuelt
+          pio pkg install --platform https://github.com
       - name: Run PlatformIO Build
         run: pio run
       - name: Upload Artifact
