@@ -12,12 +12,12 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Installer PlatformIO og C6-støtte
+      - name: Installer og Oppdater PlatformIO
         run: |
           pip install --upgrade platformio
-          # Her tvinger vi installasjonen utenom ini-fila:
-          pio pkg install --tool "platformio/framework-arduinoespressif32@https://github.com"
-          pio platform install "https://github.com"
+          # Vi tvinger PlatformIO til å oppdatere alle kilder
+          pio pkg update
+          pio platform install espressif32 --with-package=framework-arduinoespressif32
 
       - name: Run PlatformIO Build
         run: pio run
