@@ -1,17 +1,29 @@
 name: PlatformIO Build
 on: [push]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-      - name: Install PlatformIO
-        run: pip install --upgrade platformio
+      - uses: actions/checkout@v4  # Oppdatert fra v3
+
+      - name: Sett opp Python
+        uses: actions/setup-python@v5  # Oppdatert fra v4
+        with:
+          python-version: '3.11'
+
+      - name: Installer PlatformIO
+        run: |
+          pip install --upgrade platformio
+          # Denne linjen under er "magien" som fikser ESP32-C6 støtte:
+          pio platform install https://github.com
+
       - name: Run PlatformIO Build
         run: pio run
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: firmware
           path: .pio/build/**/firmware.bin
+
