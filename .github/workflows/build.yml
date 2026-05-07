@@ -6,11 +6,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.platformio/.cache
+          key: ${{ runner.os }}-pio
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
       - name: Install PlatformIO
         run: pip install --upgrade platformio
+      - name: Install ESP32-C6 Platform
+        run: pio platform install https://github.com
       - name: Run PlatformIO Build
         run: pio run
       - name: Upload Artifact
