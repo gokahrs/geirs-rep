@@ -10,13 +10,8 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install PlatformIO
-        run: |
-          pip install --upgrade platformio
-          pio pkg install --platform "espressif32@~6.9.0"
+        run: pip install --upgrade platformio
       - name: Run PlatformIO Build
         run: pio run
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: firmware
-          path: .pio/build/**/firmware.bin
+        env:
+          PLATFORMIO_PLATFORM_ESPRESSIF32_URL: https://github.com
