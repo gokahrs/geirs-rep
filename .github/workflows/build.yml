@@ -10,12 +10,12 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install PlatformIO
-        run: |
-          pip install --upgrade platformio
-          # Vi bruker den offisielle stabile pakken fra registeret, ingen URLer!
-          pio platform install "espressif32@6.9.0"
+        run: pip install --upgrade platformio
       - name: Run Build
         run: pio run
+        env:
+          # Dette tvinger inn C6-støtte via en miljøvariabel
+          PLATFORMIO_PLATFORM_ESPRESSIF32_URL: https://github.com
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
