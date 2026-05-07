@@ -15,11 +15,13 @@ jobs:
       - name: Installer PlatformIO
         run: |
           pip install --upgrade platformio
-          # Her var feilen - nå med fullstendig adresse:
-          pio platform install https://github.com
+          # Vi installerer plattformen direkte via navnet i registeret:
+          pio platform install espressif32
 
       - name: Run PlatformIO Build
         run: pio run
+        env:
+          PLATFORMIO_PLATFORM_ESPRESSIF32_URL: https://github.com
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
