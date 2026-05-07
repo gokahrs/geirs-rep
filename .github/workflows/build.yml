@@ -12,7 +12,10 @@ jobs:
       - name: Install PlatformIO
         run: pip install --upgrade platformio
       - name: Run Build
-        run: pio run
+        run: |
+          # Vi tvinger inn riktig støtte for C6 her:
+          export PLATFORMIO_PLATFORM_ESPRESSIF32_URL=https://github.com
+          pio run
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
