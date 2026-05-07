@@ -6,16 +6,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+
+      - name: Sett opp Python
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install PlatformIO
-        run: pip install --upgrade platformio
-      - name: Run Build
+
+      - name: Installer og tving C6-støtte
         run: |
-          # Vi tvinger inn riktig støtte for C6 her:
-          export PLATFORMIO_PLATFORM_ESPRESSIF32_URL=https://github.com
-          pio run
+          pip install --upgrade platformio
+          # Vi installerer den nyeste utvikler-versjonen direkte i terminalen
+          pio pkg install --platform "https://github.com"
+
+      - name: Run Build
+        run: pio run
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
