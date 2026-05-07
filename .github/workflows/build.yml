@@ -10,10 +10,13 @@ jobs:
         with:
           python-version: '3.11'
       - name: Installer PlatformIO
+        run: pip install --upgrade platformio
+      - name: Tving nedlasting av C6-støtte
         run: |
-          pip install --upgrade platformio
-          # Vi tvinger inn den nyeste utviklerversjonen manuelt
-          pio pkg install --platform https://github.com
+          # Vi bruker wget (ikke git) for å laste ned pakken direkte
+          wget https://github.com
+          # Vi forteller PlatformIO at den skal bruke denne lokale fila
+          pio platform install platform-espressif32.zip
       - name: Run PlatformIO Build
         run: pio run
       - name: Upload Artifact
