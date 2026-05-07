@@ -13,15 +13,10 @@ jobs:
           python-version: '3.11'
 
       - name: Installer PlatformIO
-        run: |
-          pip install --upgrade platformio
-          # Vi installerer plattformen direkte via navnet i registeret:
-          pio platform install espressif32
+        run: pip install --upgrade platformio
 
       - name: Run PlatformIO Build
         run: pio run
-        env:
-          PLATFORMIO_PLATFORM_ESPRESSIF32_URL: https://github.com
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
