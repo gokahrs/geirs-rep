@@ -1,4 +1,4 @@
-name: Build ESP32-C6
+name: PlatformIO Build
 on: [push]
 
 jobs:
@@ -8,25 +8,13 @@ jobs:
       - name: Sjekk ut kode
         uses: actions/checkout@v4
 
-      - name: Installer og konfigurer Arduino CLI
-        run: |
-          # Last ned og installer til en mappe vi har tilgang til
-          curl -fsSL https://githubusercontent.com | BINDIR=. sh
-          
-          # Kjør konfigurasjon ved å peke direkte på filen i samme mappe (./)
-          ./arduino-cli config init
-          ./arduino-cli config add board_manager.additional_urls https://github.io
-          ./arduino-cli core update-index
-          ./arduino-cli core install esp32:esp32
-
-      - name: Kompiler kode
-        run: |
-          mkdir -p build
-          # Vi bruker ./ her også for å være helt sikre
-          ./arduino-cli compile --fqbn esp32:esp32:esp32c6 --output-dir build src/main.cpp
-
-      - name: Last opp firmware
-        uses: actions/upload-artifact@v4
+      - name: Sett opp Python
+        uses: actions/setup-python@v5
         with:
-          name: esp32-c6-firmware
-          path: build/*.bin
+          python-version: '3.11'
+
+      - name: Installer PlatformIO
+        run: pip install --upgrade platformio
+
+      - name: Kompiler
+        run: pio run -e esp32-c6-devkitc-1
