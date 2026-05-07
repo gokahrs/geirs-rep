@@ -1,3 +1,4 @@
+#include <Arduino.h>
 // Pins for Multiplexer kontroll
 const int S0 = 1;
 const int S1 = 2;
