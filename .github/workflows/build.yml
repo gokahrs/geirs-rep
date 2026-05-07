@@ -10,12 +10,12 @@ jobs:
         with:
           python-version: '3.11'
       - name: Install PlatformIO
-        run: pip install --upgrade platformio
+        run: |
+          pip install --upgrade platformio
+          # Vi tvinger installasjon av C6-støtte manuelt i terminalen
+          pio platform install https://github.com
       - name: Run Build
         run: pio run
-        env:
-          # Dette tvinger inn C6-støtte via en miljøvariabel
-          PLATFORMIO_PLATFORM_ESPRESSIF32_URL: https://github.com
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
