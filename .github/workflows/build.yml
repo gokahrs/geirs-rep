@@ -5,16 +5,16 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Sjekk ut kode
-        uses: actions/checkout@v4
-
-      - name: Sett opp Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Installer PlatformIO
+      - name: Install PlatformIO
         run: pip install --upgrade platformio
-
-      - name: Kompiler
-        run: pio run -e esp32-c6-devkitc-1
+      - name: Run Build
+        run: pio run
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: firmware
+          path: .pio/build/**/firmware.bin
