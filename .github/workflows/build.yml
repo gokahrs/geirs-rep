@@ -1,26 +1,33 @@
-name: PlatformIO Build
+name: Build ESP32-C6
 on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      - name: Installer PlatformIO
-        run: pip install --upgrade platformio
-      - name: Tving nedlasting av C6-støtte
+      - name: Sjekk ut kode
+        uses: actions/checkout@v4
+
+      - name: Installer Arduino CLI
         run: |
-          # Vi bruker wget (ikke git) for å laste ned pakken direkte
-          wget https://github.com
-          # Vi forteller PlatformIO at den skal bruke denne lokale fila
-          pio platform install platform-espressif32.zip
-      - name: Run PlatformIO Build
-        run: pio run
-      - name: Upload Artifact
+          curl -fsSL https://githubusercontent.com | sh
+          echo "/home/runner/bin" >> $GITHUB_PATH
+
+      - name: Installer ESP32 støtte
+        run: |
+          arduino-cli config init
+          arduino-cli config add board_manager.additional_urls https://github.io
+          arduino-cli core update-index
+          arduino-cli core install esp32:esp32
+
+      - name: Kompiler kode
+        run: |
+          # Vi kompilerer main.cpp som en Arduino-skisse
+          mkdir -p build
+          arduino-cli compile --fqbn esp32:esp32:esp32c6 --output-dir build src/main.cpp
+
+      - name: Last opp firmware
         uses: actions/upload-artifact@v4
         with:
-          name: firmware
-          path: .pio/build/**/firmware.bin
+          name: esp32-c6-firmware
+          path: build/*.bin
