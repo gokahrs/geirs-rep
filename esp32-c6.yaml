@@ -1,0 +1,19 @@
+esphome:
+  name: mitt-c6-kort
+
+esp32:
+  board: esp32-c6-devkitc-1
+  variant: esp32c6
+  framework:
+    type: esp-idf
+
+wifi:
+  ssid: Amplifi
+  password: Spitfire2902
+
+# Dette gjør at du kan flashe trådløst senere (valgfritt)
+ota:
+  - platform: esphome
+
+logger:
+  hardware_uart: USB_SERIAL_JTAG
